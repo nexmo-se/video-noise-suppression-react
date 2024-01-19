@@ -7,8 +7,6 @@ It has a button to enable/disable the noise suppression processor for the local 
 The local publisher is initialised withtout connecting to any audio processor.
 After it is initialised, you can click that button to toggle the noise suppression processor.
 
-It supports multiple party.
-
 
 ## Install
 
