@@ -11,7 +11,7 @@
 In the project directory, you can run:
 
 ### `npm run server`
-Start server, a simpler sever that uses one session only, for demo only.
+Start server, a simple sever that uses one opentok session only, just a sample
 
 ### `npm start`
 
