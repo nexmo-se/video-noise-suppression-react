@@ -126,20 +126,20 @@ export function MeetingRoom() {
       return console.log('MediaProcessors are only supported in recent versions of Chrome, Electron, Opera, and Edge.')
     }
 
-    if (publisher && isInitialised) {
+    if (publisher && isInitialised && connector) {
       if (isNoiseSuppressionEnabled) {
         publisher.setAudioMediaProcessorConnector(connector)
-        .catch(console.log)
-        .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
+          .catch(console.log)
+          .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
 
       } else {
         publisher.setAudioMediaProcessorConnector(null)
-            .catch(console.log)
-            .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
+          .catch(console.log)
+          .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
       }
 
     }
-  }, [isNoiseSuppressionEnabled, publisher, processor, connector, isInitialised]);
+  }, [isNoiseSuppressionEnabled, publisher, isInitialised, processor, connector]);
 
   return (<>
     <div

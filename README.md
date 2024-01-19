@@ -2,9 +2,8 @@
 
 ## Install
 
-`npm install`
-
-`cp env.example to .env`, and add your credentials there.
+- `npm install`
+- `cp env.example to .env`, and add your credentials there.
 
 ## Available Scripts
 
@@ -17,4 +16,5 @@ Start server, a simple sever that uses one opentok session only, just a sample
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-
+### Click that button to toggle the noise suppression processor
+![Example Screenshot](./screen.png)
