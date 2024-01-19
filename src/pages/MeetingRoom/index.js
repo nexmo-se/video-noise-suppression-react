@@ -137,8 +137,8 @@ export function MeetingRoom() {
           .catch(console.log)
           .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
       }
-
     }
+    
   }, [isNoiseSuppressionEnabled, publisher, isInitialised, processor, connector]);
 
   return (<>
