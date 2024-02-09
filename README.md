@@ -1,8 +1,8 @@
 # video-unified-dashboard-new-sdk
 
-A simple react app showcase video apps migrates to the unified dashboard, with the new cldent sdk @vonage/client-sdk-video and the new server sdk "@vonage/video".
+showcase video apps's migration to the unified dashboard with the new sdks @vonage/client-sdk-video and "@vonage/video".
 
-## main changes to migrate the app from "opentok" and "@opentok/client" to the above new skds
+## Main changes
 
 - app server side: replace "opentok" with "@vonage/video", update createSession and generate a token for clients
 ```js
