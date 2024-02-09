@@ -11,8 +11,7 @@ export const ControlToolBar = ({
   hasVideo,
   handleMicButtonClick,
   handleVideoButtonClick,
-  isNoiseSuppressionEnabled,
-  toggleNoiseSuppression
+  isNoiseSuppressionEnabled, toggleNoiseSuppression,
 }) => {
   const [visible, setVisible] = useState(true);
   const classes = useStyles();
@@ -58,7 +57,7 @@ export const ControlToolBar = ({
           hasVideo={hasVideo}
           onClick={handleVideoButtonClick}
         ></VideoButton>
-
+        
         <ButtonNoiseSuppression 
           enabled={isNoiseSuppressionEnabled}
           onClick={toggleNoiseSuppression}

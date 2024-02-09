@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import OT from "@opentok/client";
+import OT from "@vonage/client-sdk-video";
 
 OT.on("exception", ({type, title}) => console.log(type, title));
 
@@ -20,7 +20,7 @@ export function useSession({ container }) {
 
   const [isConnected, setIsConnected] = useState(null);
   const [streams, setStreams] = useState([]);
-
+  
   const addStream = (stream) => {
     setStreams((prev) => [...prev, stream]);
   };
@@ -42,8 +42,10 @@ export function useSession({ container }) {
   };
 
   const onStreamCreated = ({ stream }) => {
-    subscribe(stream);
+    // let { videoType } = stream; // "camera"
+    // let { data: connectionData } = stream.connection; // string
     addStream(stream);
+    subscribe(stream);
   };
 
   const onStreamDestroyed = ({ stream }) => {
@@ -60,21 +62,17 @@ export function useSession({ container }) {
     setStreams([]);
   };
 
-  const onStreamPropertyChanged = (e) => {
-    console.log(e)
-  }
-
-  const connectSession = ({ apiKey, sessionId, token }) => {
+  const connectSession = ({ apiKey, appId, sessionId, token }) => {
     if (sessionRef.current) {
       // console.log("connectSession already isConnected");
       return;
     }
-    if (!apiKey || !sessionId || !token) {
-      throw new Error("connectSession Missing Credentials", {apiKey, sessionId, token});
+    if ((!apiKey && !appId) || !sessionId || !token) {
+      throw new Error("connectSession Missing Credentials", {apiKey, appId, sessionId, token});
     }
 
-    console.log("connecting ",  {sessionId});
-    sessionRef.current = OT.initSession(apiKey, sessionId);
+    console.log('connecting ...', sessionId);
+    sessionRef.current = OT.initSession(apiKey || appId, sessionId);
 
     sessionRef.current.off();
     sessionRef.current.on({
@@ -82,7 +80,6 @@ export function useSession({ container }) {
       streamDestroyed: onStreamDestroyed,
       sessionConnected: onSessionConnected,
       sessionDisconnected: onSessionDisconnected,
-      streamPropertyChanged: onStreamPropertyChanged
     });
 
     sessionRef.current.connect(token, (err) => {

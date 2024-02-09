@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createVonageNoiseSuppression } from "@vonage/noise-suppression";
 
 export function useMediaProcessor() {
@@ -25,7 +25,16 @@ export function useMediaProcessor() {
       return processorRef.current;
     } catch (error) {
       console.log(error);
-      processorRef.current = null;
+    }
+  }
+  const disableProcessor = async () => {
+    if (!processorRef.current) {
+      return;
+    }
+    try {
+      await processorRef.current.disable();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -52,6 +61,7 @@ export function useMediaProcessor() {
     processor: processorRef.current,
     connector: connectorRef.current,
     enableProcessor,
+    disableProcessor,
     suppressNoiseFromAudioStream
   };
 }

@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import OT from "@opentok/client";
+import OT from "@vonage/client-sdk-video";
 
 OT.on("exception", ({type, title}) => console.log(type, title));
 
@@ -7,8 +7,12 @@ const defaultPublisherOptions = {
   insertMode: "append",
   width: "100%",
   height: "100%",
-  showControls: false,
-  fitMode: "contain"
+  style: {
+    buttonDisplayMode: "on",
+    nameDisplayMode: "on",
+  },
+  showControls: true,
+  fitMode: "contain",
 };
 
 export function usePublisher() {

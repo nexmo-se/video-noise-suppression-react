@@ -14,13 +14,13 @@ import { useDevices } from '../../hooks/useDevices';
 import { useMediaProcessor } from '../../hooks/useMediaProcessor';
 import { ControlToolBar } from '../../components/ControlToolBar';
 import { useLayoutManager } from '../../hooks/useLayoutManager';
-import OT from "@opentok/client";
+import OT from "@vonage/client-sdk-video";
 
 OT.on("exception", ({type, title}) => console.log(type, title));
 
 export function MeetingRoom() {
   const { user } = useContext(UserContext);
-
+  
   const videoContainerRef = useRef();
 
   const [credentials, setCredentials] = useState(null);
@@ -29,7 +29,7 @@ export function MeetingRoom() {
 
   const [isNoiseSuppressionEnabled, setIsNoiseSuppressionEnabled] = useState(false);
 
-  const { 
+  const {
     publisher,
     publish,
     isPublishing,
@@ -40,14 +40,14 @@ export function MeetingRoom() {
     session,
     connectSession, 
     isConnected,
-    streams
+    streams,
    } = useSession({
     container: "video-container"
   });
 
-  const { getDevices } = useDevices();
-  
-  const { layoutManager, layout } = useLayoutManager({
+  const {} = useDevices();
+
+  const { layout } = useLayoutManager({
     container: "video-container"
   });
 
@@ -60,12 +60,10 @@ export function MeetingRoom() {
 
   const toggleAudio = useCallback(() => {
     setHasAudio((prevAudio) => !prevAudio);
-    localStorage.setItem("defaultPublishAudio", !hasAudio);
   }, []);
 
   const toggleVideo = useCallback(() => {
     setHasVideo((prevVideo) => !prevVideo);
-    localStorage.setItem("defaultPublishVideo", !hasVideo);
   }, []);
 
   const toggleNoiseSuppression = useCallback(() => {
@@ -102,12 +100,14 @@ export function MeetingRoom() {
         }
       }).catch(console.log);
     }
-    layout();
+    if (isPublishing !== null) {
+      layout();
+    }
   }, [session, isConnected, isPublishing]);
 
   useEffect(() => {
     layout();
-  }, [session, streams]);
+  }, [streams]);
 
   useEffect(() => {
     if (publisher) {
@@ -125,20 +125,32 @@ export function MeetingRoom() {
     if (!OT.hasMediaProcessorSupport()) {
       return console.log('MediaProcessors are only supported in recent versions of Chrome, Electron, Opera, and Edge.')
     }
-
     if (publisher && isInitialised && connector) {
+      // --- option 1 ---
       if (isNoiseSuppressionEnabled) {
         publisher.setAudioMediaProcessorConnector(connector)
           .catch(console.log)
           .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
-
       } else {
+        // clear the current connector by calling this method with null.
         publisher.setAudioMediaProcessorConnector(null)
           .catch(console.log)
           .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
       }
+
+      // --- option 2 ---
+      // if (isNoiseSuppressionEnabled) {
+      //   OT.getUserMedia({
+      //     noiseSuppression: false,
+      //   }).catch().then(s1 => {
+      //     suppressNoiseFromAudioStream(s1).catch(console.log).then((s2) => {
+      //       let audioTrack = s2.getAudioTracks()[0];
+      //       publisher.setAudioSource(audioTrack).catch(console.log);
+      //     });
+      //   });
+      // }
+
     }
-    
   }, [isNoiseSuppressionEnabled, publisher, isInitialised, processor, connector]);
 
   return (<>
@@ -158,7 +170,6 @@ export function MeetingRoom() {
       isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}
       toggleNoiseSuppression={toggleNoiseSuppression}
     />
-    
   </>
   );
 }
