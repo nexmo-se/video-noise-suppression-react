@@ -1,6 +1,6 @@
 # video-unified-dashboard-new-sdk
 
-showcase video apps's migration to the unified dashboard with the new sdks @vonage/client-sdk-video and "@vonage/video".
+showcase video apps's migration to the unified dashboard with the new sdks "@vonage/client-sdk-video" and "@vonage/video".
 
 ## Main changes
 
@@ -51,8 +51,5 @@ Start server, a simple sever that uses one opentok session only, just a sample
 
 Open [http://localhost:3002](http://localhost:3002) to view it in your browser.
 
-
-### Click that button to toggle the noise suppression processor
-![Example Screenshot](./screenshot.png)
 
 
