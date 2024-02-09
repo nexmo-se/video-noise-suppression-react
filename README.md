@@ -4,7 +4,7 @@ showcase video apps's migration to the unified dashboard with the new sdks "@von
 
 ## Main changes
 
-- app server side: replace "opentok" with "@vonage/video", update createSession and generate a token for clients
+- app server side: replace "opentok" with "@vonage/video", update createSession and generateToken parts
 ```js
 // const OpenTok = require("opentok");  // changed to
 const { Auth } = require("@vonage/auth");
@@ -15,10 +15,12 @@ const auth = new Auth({
 });
 const videoClient = new Video(auth, options);
 // ...
-// opentok.createSession(options, function (err, session) { ... } // changed to
+// 
+// opentok.createSession(options, function (err, {sessionId}) { ... } // changed to
 const session = await videoClient.createSession(sessionOptions);
-// ...
-// opentok.generateToken(req.app.get("sessionId")); // changed to
+// ... 
+// generate a token for a client
+// opentok.generateToken(sessionId); // changed to
 const token = generateClientToken(sessionId);
 ```
 
